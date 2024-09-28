@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<head>
+<title>Escape Room</title>
+  <meta charset="UTF-8">
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+* {
+  box-sizing:border-box;
+}
+body{
+  background:violet;
+  font-family:Verdana;
+}
+#room{
+  background:black;
+  width:350px;
+  height:250px;
+  position:relative;
+}
+#room.paused{
+  pointer-events: none;
+}
+#toilet{
+  position:absolute;
+  bottom:0;
+}
+#leg{
+  background:blue;
+  width:40px;
+  height:30px;
+  position:absolute;
+  left:30px;
+  bottom:0;
+}
+#tank{
+  background:blue;
+  width:30px;
+  height:40px;
+  position:absolute;
+  left:0;
+  bottom:55px;
+}
+#bowl{
+  background:blue;
+  width:70px;
+  height:25px;
+  position:absolute;
+  left:25px;
+  bottom:30px;
+  border-bottom-right-radius:20px;
+}
+#flush{
+  background:orange;
+  width:12px;
+  height:8px;
+  position:absolute;
+  left:15px;
+  bottom:70px;
+  border-bottom-right-radius:10px;
+}
+#paper:hover,
+#roll:hover,
+#pants:hover,
+#tap:hover,
+#knob:hover,
+#brush:hover,
+#flap:hover,
+#flush:hover{
+  cursor:pointer;
+}
+#flush.focus{
+  background:red;
+}
+#flap{
+  background:orange;
+  width:70px;
+  height:8px;
+  position:absolute;
+  left:30px;
+  bottom:55px;
+  border-bottom-right-radius:10px;
+  transform-origin:0 0px;
+  transform:rotate(-45deg);
+}
+#flap.focus{
+  background:red;
+}
+#washstand{
+  position:absolute;
+  bottom:70px;
+  right:100px;
+}
+#washbasin{
+  background:blue;
+  width:60px;
+  height:20px;
+  position:absolute;
+  left:0px;
+  bottom:0px;
+  border-bottom-left-radius:20px;
+  border-bottom-right-radius:20px;
+}
+#faucet{
+  background:blue;
+  width:10px;
+  height:20px;
+  position:absolute;
+  left:25px;
+  bottom:20px;
+  border-top-left-radius:20px;
+  border-top-right-radius:20px;
+}
+#tap{
+  background:orange;
+  width:3px;
+  height:10px;
+  position:absolute;
+  left:32px;
+  bottom:37px;
+  transform:rotate(45deg);
+}
+#tap.focus {
+  background:red;
+}
+#paperstand{
+  position:absolute;
+  bottom:70px;
+  left:200px;
+}
+#paper{
+  background:orange;
+  width:3px;
+  height:20px;
+  position:absolute;
+  left:0px;
+  top:-10px;
+}
+#roll{
+  border:5px solid orange;
+  width:20px;
+  height:20px;
+  position:absolute;
+  border-radius:10px;
+  left:0px;
+  bottom:0px;
+}
+#paperstand.focus #roll{
+  border-color:red;
+}
+#paperstand.focus #paper{
+  background:red;
+}
+#brushstand{
+  position:absolute;
+  bottom:0px;
+  left:100px;
+}
+#brush{
+  position:absolute;
+  bottom:4px;
+  left:0px;
+  transform-origin:0 0px;
+  transform: translateY(-32px) translateX(12px) rotate(200deg);
+}
+#handle{
+  background:orange;
+  width:4px;
+  height:30px;
+  position:absolute;
+  left:-2px;
+  bottom:0px;
+}
+#hair{
+  background:orange;
+  border:1px dotted black;
+  width:10px;
+  height:10px;
+  position:absolute;
+  left:-5px;
+  bottom:24px;
+  border-radius:20px;
+}
+#base{
+  border:1px solid blue;
+  width:20px;
+  height:20px;
+  position:absolute;
+  left:-10px;
+  bottom:0px;
+  border-bottom-left-radius:20px;
+  border-bottom-right-radius:20px;
+}
+#brush.focus #hair{
+  background:red;
+}
+#brush.focus #handle{
+  background:red;
+}
+#exit{
+  position:absolute;
+  bottom:0;
+  right:0;
+  top:0;
+}
+#exit.focus #knob{
+  background:red;
+}
+#door{
+  background:blue;
+  width:10px;
+  height:220px;
+  position:absolute;
+  right:0px;
+  bottom:0px;
+}
+#knob{
+  background:orange;
+  width:10px;
+  height:10px;
+  position:absolute;
+  right:10px;
+  bottom:70px;
+  border-bottom-right-radius:10px;
+}
+#person{
+  position:absolute;
+  left:150px;
+  bottom:0px;
+}
+#left-leg{
+  position:absolute;
+  bottom:0;
+  left:-10px;
+  width:10px;
+  height:80px;
+  background:blue;
+}
+#right-leg{
+  position:absolute;
+  bottom:0;
+  left:10px;
+  width:10px;
+  height:80px;
+  background:blue;
+}
+#torso{
+  position:absolute;
+  bottom:80px;
+  left:-10px;
+  width:30px;
+  height:80px;
+  background:blue;
+}
+#left-arm{
+  position:absolute;
+  bottom:80px;
+  left:-20px;
+  width:10px;
+  height:80px;
+  background:blue;
+  border-bottom-right-radius:20px;
+  border-top-left-radius:20px;
+}
+#right-arm{
+  position:absolute;
+  bottom:80px;
+  left:20px;
+  width:10px;
+  height:80px;
+  background:blue;
+  border-bottom-left-radius:20px;
+  border-top-right-radius:20px;
+}
+#head{
+  position:absolute;
+  bottom:160px;
+  left:-10px;
+  width:30px;
+  height:30px;
+  background:blue;
+  border-radius:20px;
+}
+#pants{
+  background:orange;
+  position:absolute;
+  width:42px;
+  height:35px;
+  bottom:5px;
+  left:-15px;
+  border-right:2px dashed black;
+  border-left:3px dashed black;
+}
+#pants.focus{
+  background:red;
+}
+h1{
+  font-size:20px;
+}
+#plan{
+  font-size:14px;
+  width:350px;
+}
+button{
+  border:2px solid black;
+  background:orange;
+  font-size:20px;
+  padding:5px;
+}
+
+.won #pants{
+  display:none;
+}
+.won #left-arm,
+.won #right-arm,
+.won #brush,
+.won #paper,
+.won #flap,
+.won #left-leg,
+.won #right-leg
+{
+  animation-duration:0.3s;
+  animation-iteration-count: infinite;
+  animation-direction:alternate;
+  animation-timing-function:linear;
+}
+@keyframes won-left-arm{
+  from{transform:rotate(140deg);}
+  to{transform:rotate(200deg);}
+}
+.won #left-arm{
+  transform-origin:5px 5px;
+  animation-name:won-left-arm;
+}
+
+@keyframes won-right-arm{
+  from{transform:rotate(160deg);}
+  to{transform:rotate(220deg);}
+}
+.won #right-arm{
+  transform-origin:5px 5px;
+  animation-name:won-right-arm;
+}
+@keyframes won-flap{
+  from{transform: rotate(0deg)}
+  to{transform: rotate(-60deg)}
+}
+.won #flap{
+  animation-name:won-flap;
+}
+@keyframes won-paper{
+  from{transform: rotate(0deg)}
+  to{transform: rotate(720deg)}
+}
+.won #paper{
+  transform-origin:10px 0px;
+  animation-name:won-paper;
+}
+
+@keyframes won-brush{
+  from{transform: translateY(-155px) translateX(35px) rotate(-40deg) translateY(-60px)}
+  to{transform: translateY(-155px) translateX(35px) rotate(20deg) translateY(-60px)}
+}
+.won #brush{
+  animation-name:won-brush;
+}
+#message{
+  background: black;
+  color: orange;
+  display: block;
+  width: 350px;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+#go.hide,
+#alert{
+  display:none;
+}
+#alert.show{
+  display:block;
+}
+label{
+  margin-top:10px;
+  display: block;
+}
+  </style>
+
+</head>
+<body>
+<div id=room>
+  <div id=toilet>
+    <div id=bowl></div>
+    <div id=leg></div>
+    <div id=tank></div>
+    <div id=flush></div>
+    <div id=flap></div>
+  </div>
+  <div id=washstand>
+    <div id=washbasin></div>
+    <div id=faucet></div>
+    <div id=tap></div>
+  </div>
+  <div id=paperstand>
+    <div id=roll></div>
+    <div id=paper></div>
+  </div>
+  <div id=brushstand>
+    <div id=base></div>
+    <div id=brush>
+      <div id=hair></div>
+      <div id=handle></div>
+    </div>
+  </div>
+  <div id=exit>
+    <div id=door></div>
+    <div id=knob></div>
+  </div>
+  <div id=person>
+    <div id=head></div>
+    <div id=torso></div>
+    <div id=right-leg></div>
+    <div id=left-leg></div>
+    <div id=right-arm></div>
+    <div id=left-arm></div>
+    <div id=pants></div>
+  </div>
+</div>
+<h1>The Plan:</h1>
+<p id=plan>...</p>
+<div id=alert>
+<span id=message></span>
+<button id="retry">↻ Retry</button>
+</div>
+<button id="go">Let's do it!</button>
+<label><input type=checkbox id=easy_mode checked>easy mode</label>
+</body>
+<script>
+const id2act={
+  'flush':'flush',
+  'tank':'flush',
+  'faucet':'wash',
+  'paper':'paper',
+  'roll':'paper',
+  'pants':'pants',
+  'tap':'wash',
+  'knob':'exit',
+  'brush':'brush',
+  'flap':['drop','lift'],
+};
+let plan=[];
+function redraw(){
+  document.getElementById('plan').innerText=plan.join(', ')+'...';
+}
+function addAction(act){
+  plan.push(act);
+  redraw();
+}
+Object.keys(id2act).forEach(id=>{
+  let act=id2act[id];
+  document.getElementById(id).onclick=()=>{
+    a=act;
+    if(Array.isArray(act)){
+      a=act.shift();
+      act.push(a);
+    }
+    addAction(a);
+  };
+});
+
+function E(p){
+  return plan.some(p);
+}
+const errors=[
+  {
+    when:()=>!E(a=>a=='exit'),
+    text:"You've forgot to get out!",
+    focus:'exit',
+  },
+  {
+    when:()=>!E(a=>a=='pants'),
+    text:"You've forgot to pull up your pants!",
+    focus:'pants',
+  },
+  {
+    when:()=>!E(a=>a=='paper'),
+    text:"You've forgot to wipe yourself!",
+    focus:'paperstand',
+  },
+  {
+    when:()=>!E(a=>a=='brush'),
+    text:"You've forgot to clean after yourself!",
+    focus:'brush',
+  },
+  {
+    when:()=>!E(a=>a=='flush'),
+    text:"You've forgot to flush!",
+    focus:'flush',
+  },
+  {
+    when:()=>!E((a,t)=>a=='drop'&&!E((a2,t2)=>t<t2&&a2=='lift')),
+    text:"You've left the lid up!",
+    focus:'flap',
+  },
+  {
+    when:()=>!E(a=>a=='wash'),
+    text:"You've forgot to wash your hands!",
+    focus:'tap',
+  },
+  {
+    when:()=>E((a,t)=>a=='exit' && E((a2,t2)=>t<t2)),
+    text:"You've tried to come back after your turn!",
+    focus:'exit',
+  },
+  {
+    when:()=>E((a,t)=>a=='pants'&&E((a2,t2)=>t<t2&&a2=='paper')),
+    text:"You've tried to wipe yourself through your pants!",
+    focus:['paperstand','pants'],
+  },
+  {
+    when:()=>E((a,t)=>a=='paper'&&!E((a2,t2)=>t<t2&&a2=='wash')),
+    text:"You didn't wash your hands after wiping yourself!",
+    focus:['tap','paperstand'],
+  },
+  {
+    when:()=>E((a,t)=>a=='brush'&&!E((a2,t2)=>t<t2&&a2=='wash')),
+    text:"You didn't wash your hands after touching the brush!",
+    focus:['tap','brush'],
+  },
+  {
+    when:()=>E((a,t)=>(a=='lift'||a=='drop')&&!E((a2,t2)=>t<t2&&a2=='wash')),
+    text:"You didn't wash your hands after touching the lid!",
+    focus:['tap','flap'],
+  },
+  {
+    when:()=>E((a,t)=>a=='flush'&&!E((a2,t2)=>t<t2&&a2=='wash')),
+    text:"You didn't wash your hands after touching the flush lever!",
+    focus:['tap','flush'],
+  },
+  {
+    when:()=>E((a,t)=>a=='drop'&&E(
+      (a3,t3)=>t<t3&&a3=='paper'&&!E((a2,t2)=>t<t2&&t2<t3&&a2=='lift')
+    )),
+    text:"You've wiped yourself while the lid was closed! What did you do with the dirty paper?",
+    focus:['paperstand','flap'],
+  },
+  {
+    when:()=>E((a,t)=>a=='drop'&&E(
+      (a3,t3)=>t<t3&&a3=='brush'&&!E((a2,t2)=>t<t2&&t2<t3&&a2=='lift')
+    )),
+    text:"You've tried to clean the toilet while the lid was closed! What did you do with the brush?",
+    focus:['brush','flap'],
+  },
+  {
+    when:()=>E(
+      (a3,t3)=>a3=='flush'&&!E(
+        (a,t)=>t<t3&&a=='drop'&&!E(
+          (a2,t2)=>t<t2&&t2<t3&&a2=='lift'
+        )
+      )
+    ),
+    text:"You've flushed the toilet while the lid was open!",
+    focus:['flush','flap'],
+  },
+  {
+    when:()=>!E((a,t)=>a=='brush'&&E((a2,t2)=>t<t2&&a2=='flush')),
+    text:"You didn't flush after brushing the toilet!",
+    focus:['brush','flush'],
+  },
+  {
+    when:()=>E((a,t)=>a=='paper'&&!E((a2,t2)=>t<t2&&a2=='flush')),
+    text:"You didn't flush after using a paper!",
+    focus:['paperstand','flush'],
+  },
+  {
+    when:()=>E((a3,t3)=>a3=='brush'&&!E((a4,t4)=>t3<t4&&a4=='brush')&&E((a,t)=>a=='paper'&&t<t3&&!E((a2,t2)=>t<t2&&t2<t3&&a2=='flush'))),
+    text:"You haven't flush after throwing paper before using the brush last time! The brush is covered in paper..",
+    focus:['paperstand','flush','brush'],
+  },
+  {
+    when:()=>E((a3,t3)=>a3=='brush'&&!E((a4,t4)=>t3<t4&&a4=='brush')&&!E((a,t)=>a=='flush'&&t<t3)),
+    text:"You haven't flush before using the brush last time! The brush is gross..",
+    focus:['flush','brush'],
+  },
+  {
+    when:()=>E((a2,t2)=>a2=='pants'&&E((a,t)=>t<t2&&a=='pants')),
+    text:"You have tried to put on pants twice...",
+    focus:['pants'],
+  },
+  {
+    when:()=>E((a2,t2)=>a2=='brush'&&!E((a,t)=>t<t2&&a=='pants')),
+    text:"You have used a brush with pants down! You wouldn't like some of the droplets to get into your pants would you?",
+    focus:['pants','brush'],
+    level:'hard',
+  },
+  {
+    when:()=>E((a3,t3)=>a3=='pants'&&E((a,t)=>a=='paper'&&t<t3 &&!E((a2,t2)=>t<t2 && t2<t3 && a2=='wash'))),
+    text:"You've touched your pants with unwashed hands after wiping yourself!",
+    focus:['pants','paperstand','tap'],
+    level:'hard',
+  },
+
+];
+function reset(){
+  plan=[];
+  redraw();
+  if(id2act['flap'][0]!='drop'){
+    id2act['flap'].push(id2act['flap'].shift());
+  }
+  document.getElementById('alert').className='';
+  document.getElementById('go').className='';
+  document.getElementById('room').className='';
+}
+function go(){
+  document.getElementById('go').className='hide';
+  const easy_mode=document.getElementById('easy_mode').checked;
+  let error=errors.find(({when,level}) => when()&&(level!='hard'||!easy_mode));
+  if(error){
+    document.getElementById('room').className='paused lost';
+    const no=1+errors.indexOf(error);
+    const ids=Array.isArray(error.focus)?error.focus:[error.focus];
+    const els=ids.map(id=>document.getElementById(id));
+    els.forEach(e=>e.className='focus');
+    document.getElementById('message').innerText=`You've violated rule#${no}:\n${error.text}`;
+    document.getElementById('retry').onclick=()=>{
+      els.forEach(e=>e.className='');
+      reset();
+    }
+  }else{
+    document.getElementById('room').className='paused won';
+    document.getElementById('message').innerText="YOU WON!!!";
+    document.getElementById('retry').onclick=()=>{
+      reset();
+    }
+  }
+  document.getElementById('alert').className='show';
+}
+document.getElementById('go').onclick=go;
+</script>
